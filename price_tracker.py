@@ -1,10 +1,14 @@
+from flask import Flask, render_template, request, jsonify
 import requests
 from lxml import html
-import time
 import json
+import time
 from datetime import datetime
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
+import threading
+
+app = Flask(__name__)
 
 
 def setup_session():
@@ -35,6 +39,19 @@ def scrape_price(session, url):
         return None
 
 
+def load_urls():
+    try:
+        with open("urls.json", "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
+
+
+def save_urls(urls):
+    with open("urls.json", "w") as f:
+        json.dump(urls, f, indent=2)
+
+
 def load_data():
     try:
         with open("price_data.json", "r") as f:
@@ -48,39 +65,57 @@ def save_data(data):
         json.dump(data, f, indent=2)
 
 
-def check_prices(urls):
-    session = setup_session()
-    data = load_data()
-
-    for url in urls:
-        current_price = scrape_price(session, url)
-        if current_price:
-            if url not in data:
-                data[url] = {"price": current_price, "last_updated": str(datetime.now())}
-                print(f"Yeni ürün eklendi: {url} - Fiyat: {current_price}")
-            elif data[url]["price"] != current_price:
-                print(f"Fiyat değişti: {url}")
-                print(f"Eski fiyat: {data[url]['price']}, Yeni fiyat: {current_price}")
-                data[url] = {"price": current_price, "last_updated": str(datetime.now())}
-            else:
-                data[url]["last_updated"] = str(datetime.now())
-
-    save_data(data)
-
-
-def main():
-    urls = [
-        "https://www.akakce.com/mouse/en-ucuz-razer-deathadder-essential-optik-kablolu-oyuncu-mouse-fiyati,335153583.html",
-        "https://www.akakce.com/mouse/en-ucuz-razer-cobra-rz01-04650100-r3m1-optik-kablolu-fiyati,223063350.html",
-        # Diğer URL'leri buraya ekleyin
-    ]
-
+def check_prices():
     while True:
-        print("Fiyatlar kontrol ediliyor...")
-        check_prices(urls)
-        print("Kontrol tamamlandı. 5 dakika bekleniyor...")
+        session = setup_session()
+        urls = load_urls()
+        data = load_data()
+
+        for url in urls:
+            current_price = scrape_price(session, url)
+            if current_price:
+                if url not in data:
+                    data[url] = {"price": current_price, "last_updated": str(datetime.now())}
+                    print(f"Yeni ürün eklendi: {url} - Fiyat: {current_price}")
+                elif data[url]["price"] != current_price:
+                    print(f"Fiyat değişti: {url}")
+                    print(f"Eski fiyat: {data[url]['price']}, Yeni fiyat: {current_price}")
+                    data[url] = {"price": current_price, "last_updated": str(datetime.now())}
+                else:
+                    data[url]["last_updated"] = str(datetime.now())
+            else:
+                print(f"Fiyat alınamadı: {url}")
+
+        save_data(data)
         time.sleep(300)  # 5 dakika bekle
 
 
+@app.route("/")
+def index():
+    urls = load_urls()
+    return render_template("index.html", urls=urls)
+
+
+@app.route("/add_url", methods=["POST"])
+def add_url():
+    url = request.form["url"]
+    urls = load_urls()
+    if url not in urls:
+        urls.append(url)
+        save_urls(urls)
+    return jsonify(success=True, urls=urls)
+
+
+@app.route("/remove_url", methods=["POST"])
+def remove_url():
+    url = request.form["url"]
+    urls = load_urls()
+    if url in urls:
+        urls.remove(url)
+        save_urls(urls)
+    return jsonify(success=True, urls=urls)
+
+
 if __name__ == "__main__":
-    main()
+    threading.Thread(target=check_prices, daemon=True).start()
+    app.run(debug=True)

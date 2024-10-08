@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiyat Takip Uygulaması</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        #url-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        #url-list li {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        input[type="text"] {
+            width: 70%;
+            padding: 5px;
+        }
+        button {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .remove-btn {
+            background-color: #f44336;
+        }
+        .remove-btn:hover {
+            background-color: #da190b;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fiyat Takip Uygulaması</h1>
+    <div>
+        <input type="text" id="new-url" placeholder="Yeni URL ekleyin">
+        <button onclick="addUrl()">Ekle</button>
+    </div>
+    <h2>Takip Edilen URL'ler</h2>
+    <ul id="url-list">
+        {% for url in urls %}
+        <li>
+            <span>{{ url }}</span>
+            <button class="remove-btn" onclick="removeUrl('{{ url }}')">Sil</button>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <script>
+        function addUrl() {
+            var url = $('#new-url').val();
+            if (url) {
+                $.post('/add_url', {url: url}, function(response) {
+                    if (response.success) {
+                        updateUrlList(response.urls);
+                        $('#new-url').val('');
+                    }
+                });
+            }
+        }
+
+        function removeUrl(url) {
+            $.post('/remove_url', {url: url}, function(response) {
+                if (response.success) {
+                    updateUrlList(response.urls);
+                }
+            });
+        }
+
+        function updateUrlList(urls) {
+            var list = $('#url-list');
+            list.empty();
+            urls.forEach(function(url) {
+                list.append('<li><span>' + url + '</span><button class="remove-btn" onclick="removeUrl(\'' + url + '\')">Sil</button></li>');
+            });
+        }
+    </script>
+</body>
+</html>
