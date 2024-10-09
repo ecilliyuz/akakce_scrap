@@ -135,11 +135,12 @@ def check_prices():
         for url in urls:
             current_price = scrape_price(session, url)
             if current_price:
+                current_price = current_price.split(",")[0]
                 if url not in data:
                     data[url] = {"price": current_price, "last_updated": str(datetime.now())}
                     logger.info(f"Yeni ürün eklendi: {url} - Fiyat: {current_price}")
                     send_telegram_message(f"Yeni ürün eklendi: {url} - Fiyat: {current_price}")
-                elif data[url]["price"] != current_price:
+                elif data[url]["price"] < current_price:
                     logger.info(f"Fiyat değişti: {url}")
                     logger.info(f"Eski fiyat: {data[url]['price']}, Yeni fiyat: {current_price}")
                     send_telegram_message(f"Fiyat değişti: {url}\nEski fiyat: {data[url]['price']}, Yeni fiyat: {current_price}")
