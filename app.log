@@ -1,0 +1,63 @@
+2024-10-09 15:59:59,363 - INFO - Uygulama başlatılıyor
+2024-10-09 15:59:59,364 - INFO - Fiyat kontrol döngüsü başlatılıyor
+2024-10-09 15:59:59,364 - INFO - Oturum kurulmaya başlanıyor
+2024-10-09 15:59:59,365 - INFO - Oturum başarıyla kuruldu
+2024-10-09 15:59:59,365 - INFO - URL'ler yükleniyor
+2024-10-09 15:59:59,366 - INFO - 5 URL başarıyla yüklendi
+2024-10-09 15:59:59,366 - INFO - Fiyat verileri yükleniyor
+2024-10-09 15:59:59,367 - INFO - 5 ürün verisi başarıyla yüklendi
+2024-10-09 15:59:59,367 - INFO - Fiyat çekiliyor: https://www.akakce.com/filtre-kahve/en-ucuz-julius-meinl-president-500-gr-cekirdek-kahve-fiyati,913635006.html
+2024-10-09 15:59:59,407 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5005
+ * Running on http://172.25.0.2:5005
+2024-10-09 15:59:59,407 - INFO - [33mPress CTRL+C to quit[0m
+2024-10-09 15:59:59,408 - INFO -  * Restarting with stat
+2024-10-09 15:59:59,709 - INFO - Uygulama başlatılıyor
+2024-10-09 15:59:59,710 - INFO - Fiyat kontrol döngüsü başlatılıyor
+2024-10-09 15:59:59,710 - INFO - Oturum kurulmaya başlanıyor
+2024-10-09 15:59:59,711 - INFO - Oturum başarıyla kuruldu
+2024-10-09 15:59:59,711 - INFO - URL'ler yükleniyor
+2024-10-09 15:59:59,712 - INFO - 5 URL başarıyla yüklendi
+2024-10-09 15:59:59,712 - INFO - Fiyat verileri yükleniyor
+2024-10-09 15:59:59,713 - INFO - 5 ürün verisi başarıyla yüklendi
+2024-10-09 15:59:59,713 - INFO - Fiyat çekiliyor: https://www.akakce.com/filtre-kahve/en-ucuz-julius-meinl-president-500-gr-cekirdek-kahve-fiyati,913635006.html
+2024-10-09 15:59:59,727 - WARNING -  * Debugger is active!
+2024-10-09 15:59:59,728 - INFO -  * Debugger PIN: 420-818-255
+2024-10-09 16:00:00,010 - INFO - Fiyat başarıyla çekildi: https://www.akakce.com/filtre-kahve/en-ucuz-julius-meinl-president-500-gr-cekirdek-kahve-fiyati,913635006.html - 237,50 TL
+2024-10-09 16:00:00,011 - INFO - Fiyat çekiliyor: https://www.akakce.com/kedi-tuvaleti/en-ucuz-yasomi-smart-cat-cleaner-fiyati,295954690.html
+2024-10-09 16:00:06,724 - INFO - Fiyat başarıyla çekildi: https://www.akakce.com/filtre-kahve/en-ucuz-julius-meinl-president-500-gr-cekirdek-kahve-fiyati,913635006.html - 237,50 TL
+2024-10-09 16:00:06,725 - INFO - Fiyat çekiliyor: https://www.akakce.com/kedi-tuvaleti/en-ucuz-yasomi-smart-cat-cleaner-fiyati,295954690.html
+2024-10-09 16:00:07,268 - ERROR - Hata oluştu https://www.akakce.com/kedi-tuvaleti/en-ucuz-yasomi-smart-cat-cleaner-fiyati,295954690.html için: HTTPSConnectionPool(host='www.akakce.com', port=443): Max retries exceeded with url: /kedi-tuvaleti/en-ucuz-yasomi-smart-cat-cleaner-fiyati,295954690.html (Caused by ResponseError('too many 429 error responses'))
+2024-10-09 16:00:07,268 - WARNING - Fiyat alınamadı: https://www.akakce.com/kedi-tuvaleti/en-ucuz-yasomi-smart-cat-cleaner-fiyati,295954690.html
+2024-10-09 16:00:07,269 - INFO - Fiyat çekiliyor: https://www.akakce.com/mouse/en-ucuz-razer-cobra-rz01-04650100-r3m1-optik-kablolu-fiyati,223063350.html
+2024-10-09 16:00:08,284 - INFO - Fiyat başarıyla çekildi: https://www.akakce.com/mouse/en-ucuz-razer-cobra-rz01-04650100-r3m1-optik-kablolu-fiyati,223063350.html - 1.169,00 TL
+2024-10-09 16:00:08,285 - INFO - Fiyat çekiliyor: https://www.akakce.com/mouse/en-ucuz-razer-deathadder-essential-optik-kablolu-oyuncu-mouse-fiyati,335153583.html
+2024-10-09 16:00:13,745 - INFO - Fiyat başarıyla çekildi: https://www.akakce.com/kedi-tuvaleti/en-ucuz-yasomi-smart-cat-cleaner-fiyati,295954690.html - 12.199,00 TL
+2024-10-09 16:00:13,745 - INFO - Fiyat çekiliyor: https://www.akakce.com/mouse/en-ucuz-razer-cobra-rz01-04650100-r3m1-optik-kablolu-fiyati,223063350.html
+2024-10-09 16:00:16,401 - INFO - Fiyat başarıyla çekildi: https://www.akakce.com/mouse/en-ucuz-razer-deathadder-essential-optik-kablolu-oyuncu-mouse-fiyati,335153583.html - 677,00 TL
+2024-10-09 16:00:16,403 - INFO - Fiyat çekiliyor: https://www.akakce.com/mouse/en-ucuz-steelseries-rival-3-rgb-optik-kablolu-oyuncu-mouse-fiyati,643864689.html
+2024-10-09 16:00:21,443 - INFO - Fiyat başarıyla çekildi: https://www.akakce.com/mouse/en-ucuz-razer-cobra-rz01-04650100-r3m1-optik-kablolu-fiyati,223063350.html - 1.169,00 TL
+2024-10-09 16:00:21,444 - INFO - Fiyat çekiliyor: https://www.akakce.com/mouse/en-ucuz-razer-deathadder-essential-optik-kablolu-oyuncu-mouse-fiyati,335153583.html
+2024-10-09 16:00:24,697 - INFO - Fiyat başarıyla çekildi: https://www.akakce.com/mouse/en-ucuz-steelseries-rival-3-rgb-optik-kablolu-oyuncu-mouse-fiyati,643864689.html - 889,00 TL
+2024-10-09 16:00:24,698 - INFO - 5 ürün verisi kaydediliyor
+2024-10-09 16:00:24,699 - INFO - Fiyat verileri başarıyla kaydedildi
+2024-10-09 16:00:24,699 - INFO - Fiyat kontrol döngüsü tamamlandı. 5 dakika bekleniyor.
+2024-10-09 16:00:29,807 - INFO - Fiyat başarıyla çekildi: https://www.akakce.com/mouse/en-ucuz-razer-deathadder-essential-optik-kablolu-oyuncu-mouse-fiyati,335153583.html - 677,00 TL
+2024-10-09 16:00:29,807 - INFO - Fiyat çekiliyor: https://www.akakce.com/mouse/en-ucuz-steelseries-rival-3-rgb-optik-kablolu-oyuncu-mouse-fiyati,643864689.html
+2024-10-09 16:00:33,677 - INFO - Fiyat başarıyla çekildi: https://www.akakce.com/mouse/en-ucuz-steelseries-rival-3-rgb-optik-kablolu-oyuncu-mouse-fiyati,643864689.html - 889,00 TL
+2024-10-09 16:00:33,678 - INFO - 5 ürün verisi kaydediliyor
+2024-10-09 16:00:33,679 - INFO - Fiyat verileri başarıyla kaydedildi
+2024-10-09 16:00:33,679 - INFO - Fiyat kontrol döngüsü tamamlandı. 5 dakika bekleniyor.
+2024-10-09 16:01:24,209 - INFO - Yeni URL ekleme isteği: https://www.akakce.com/filtre-kahve/en-ucuz-julius-meinl-president-500-gr-cekirdek-kahve-fiyati,913635006.html
+2024-10-09 16:01:24,210 - INFO - URL'ler yükleniyor
+2024-10-09 16:01:24,210 - INFO - 5 URL başarıyla yüklendi
+2024-10-09 16:01:24,210 - INFO - URL zaten mevcut: https://www.akakce.com/filtre-kahve/en-ucuz-julius-meinl-president-500-gr-cekirdek-kahve-fiyati,913635006.html
+2024-10-09 16:01:24,211 - INFO - 172.25.0.1 - - [09/Oct/2024 16:01:24] "POST /add_url HTTP/1.1" 200 -
+2024-10-09 16:01:32,011 - INFO - Yeni URL ekleme isteği: https://www.akakce.com/su-aritma-filtresi/en-ucuz-brita-maxtra-pro-all-in-1-6-li-fiyati,387544594.html
+2024-10-09 16:01:32,012 - INFO - URL'ler yükleniyor
+2024-10-09 16:01:32,012 - INFO - 5 URL başarıyla yüklendi
+2024-10-09 16:01:32,013 - INFO - 6 URL kaydediliyor
+2024-10-09 16:01:32,013 - INFO - URL'ler başarıyla kaydedildi
+2024-10-09 16:01:32,014 - INFO - Yeni URL eklendi: https://www.akakce.com/su-aritma-filtresi/en-ucuz-brita-maxtra-pro-all-in-1-6-li-fiyati,387544594.html
+2024-10-09 16:01:32,014 - INFO - 172.25.0.1 - - [09/Oct/2024 16:01:32] "POST /add_url HTTP/1.1" 200 -
