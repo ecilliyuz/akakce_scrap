@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  flask-app:
+    build: .
+    ports:
+      - "5005:5005"  # Host makinenizin 5005 portunu container'ın 5005 portuna eşler
+    volumes:
+      - .:/app  # Mevcut dizini container içinde /app olarak bağlar
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+      - TZ=Europe/Istanbul  # İstanbul saat dilimi ayarı
