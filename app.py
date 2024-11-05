@@ -130,7 +130,7 @@ def check_prices():
                 elif data[url]["price"] > current_price:
                     logger.info(f"Fiyat değişti: {url}")
                     logger.info(f"Eski fiyat: {data[url]['price']}, Yeni fiyat: {pure_price}")
-                    send_telegram_message(f"Fiyat değişti: {url}\nEski fiyat: {data[url]['price']}, Yeni fiyat: {current_price}")
+                    send_telegram_message(f"Fiyat değişti: {url}\nEski fiyat: {data[url]['price']}, Yeni fiyat: {pure_price}")
                     data[url]["price"] = current_price  # Update the price
                     data[url]["last_updated"] = str(datetime.now())  # Update timestamp
                 # else:
