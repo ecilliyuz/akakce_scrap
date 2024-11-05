@@ -19,7 +19,7 @@ load_dotenv()
 # logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 # Log dosyasını ve formatını ayarlayın
-log_file_path = "app.log"  # Log dosyasının yolu
+log_file_path = "logs/app.log"  # Log dosyasının yolu
 
 # File Handler
 file_handler = RotatingFileHandler(log_file_path, maxBytes=100000, backupCount=10)
@@ -87,25 +87,6 @@ def scrape_price(session, url):
         return None
 
 
-def load_urls():
-    logger.info("URL'ler yükleniyor")
-    try:
-        with open("urls.json", "r") as f:
-            urls = json.load(f)
-            logger.info(f"{len(urls)} URL başarıyla yüklendi")
-            return urls
-    except FileNotFoundError:
-        logger.warning("urls.json dosyası bulunamadı, boş liste döndürülüyor")
-        return []
-
-
-def save_urls(urls):
-    logger.info(f"{len(urls)} URL kaydediliyor")
-    with open("urls.json", "w") as f:
-        json.dump(urls, f, indent=2)
-    logger.info("URL'ler başarıyla kaydedildi")
-
-
 def load_data():
     logger.info("Fiyat verileri yükleniyor")
     try:
@@ -128,25 +109,34 @@ def save_data(data):
 def check_prices():
     logger.info("Fiyat kontrol döngüsü başlatılıyor")
     while True:
-        session = setup_session()
-        urls = load_urls()
+        urls = load_urls()  # Assuming this returns a list of dicts with 'url' and 'website'
         data = load_data()
 
-        for url in urls:
+        for entry in urls:
+            url = entry["url"]
+            website = entry["website"]  # Get the associated website
+            session = setup_session()
             current_price = scrape_price(session, url)
+
             if current_price:
-                current_price = current_price.split(",")[0]
+                pure_price = current_price  # Adjust parsing if necessary
+                current_price = current_price.split(",")[0]  # Adjust parsing if necessary
+                current_price = current_price.replace(".", "")
+                print(current_price)
                 if url not in data:
-                    data[url] = {"price": current_price, "last_updated": str(datetime.now())}
+                    data[url] = {"website": website, "price": current_price, "last_updated": str(datetime.now())}
                     logger.info(f"Yeni ürün eklendi: {url} - Fiyat: {current_price}")
-                    send_telegram_message(f"Yeni ürün eklendi: {url} - Fiyat: {current_price}")
-                elif data[url]["price"] < current_price:
+                    send_telegram_message(f"Yeni ürün eklendi: {url} - Fiyat: {pure_price}")
+                elif data[url]["price"] > current_price:
                     logger.info(f"Fiyat değişti: {url}")
-                    logger.info(f"Eski fiyat: {data[url]['price']}, Yeni fiyat: {current_price}")
+                    logger.info(f"Eski fiyat: {data[url]['price']}, Yeni fiyat: {pure_price}")
                     send_telegram_message(f"Fiyat değişti: {url}\nEski fiyat: {data[url]['price']}, Yeni fiyat: {current_price}")
-                    data[url] = {"price": current_price, "last_updated": str(datetime.now())}
-                else:
-                    data[url]["last_updated"] = str(datetime.now())
+                    data[url]["price"] = current_price  # Update the price
+                    data[url]["last_updated"] = str(datetime.now())  # Update timestamp
+                # else:
+                #     logger.info(f"Fiyat aynı veya yüksek: {current_price}")
+                # data[url]["price"] = current_price
+                # data[url]["last_updated"] = str(datetime.now())  # Update the last checked time
             else:
                 logger.warning(f"Fiyat alınamadı: {url}")
 
@@ -159,35 +149,69 @@ def check_prices():
 def index():
     logger.info("Ana sayfa isteği alındı")
     urls = load_urls()
-    return render_template("index.html", urls=urls)
+    with open("price_data.json", "r") as f:
+        pricedata = json.load(f)
+    print(pricedata)
+    return render_template("index.html", urls=urls, pricedata=pricedata)
+
+
+def load_urls():
+    try:
+        with open("urls.json", "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
 
 
 @app.route("/add_url", methods=["POST"])
 def add_url():
     url = request.form["url"]
-    logger.info(f"Yeni URL ekleme isteği: {url}")
+    website = request.form["website"]  # Get the website from the form data
+    logger.info(f"Yeni URL ekleme isteği: {url} ({website})")
+
     urls = load_urls()
-    if url not in urls:
-        urls.append(url)
+
+    # Check if the URL already exists
+    if url not in [item["url"] for item in urls]:
+        new_entry = {"website": website, "url": url}
+        urls.append(new_entry)
         save_urls(urls)
-        logger.info(f"Yeni URL eklendi: {url}")
+        logger.info(f"Yeni URL eklendi: {new_entry}")
     else:
         logger.info(f"URL zaten mevcut: {url}")
+
     return jsonify(success=True, urls=urls)
+
+
+def save_urls(urls):
+    logger.info(f"{len(urls)} URL kaydediliyor")
+    with open("urls.json", "w") as f:
+        json.dump(urls, f, indent=2)
+    logger.info("URL'ler başarıyla kaydedildi")
 
 
 @app.route("/remove_url", methods=["POST"])
 def remove_url():
-    url = request.form["url"]
-    logger.info(f"URL kaldırma isteği: {url}")
+    url_to_remove = request.form["url"]
+    print(url_to_remove)
+    logger.info(f"URL silme isteği: {url_to_remove}")
+
+    # Load the current list of URLs
     urls = load_urls()
-    if url in urls:
-        urls.remove(url)
-        save_urls(urls)
-        logger.info(f"URL kaldırıldı: {url}")
-    else:
-        logger.warning(f"Kaldırılmak istenen URL bulunamadı: {url}")
-    return jsonify(success=True, urls=urls)
+
+    # Log the current URLs before removal
+    logger.info(f"Mevcut URL'ler: {urls}")
+
+    # Remove the URL from the list
+    updated_urls = [entry for entry in urls if entry["url"] != url_to_remove]
+
+    # Log the URLs after attempted removal
+    logger.info(f"Güncellenmiş URL'ler: {updated_urls}")
+
+    # Save the updated list of URLs
+    save_urls(updated_urls)
+
+    return jsonify(success=True, urls=updated_urls)
 
 
 if __name__ == "__main__":

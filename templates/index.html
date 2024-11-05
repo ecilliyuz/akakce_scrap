@@ -50,15 +50,25 @@
 <body>
     <h1>Fiyat Takip Uygulaması</h1>
     <div>
+        <select id="website-select">
+            <option value="akakce">Akakçe</option>
+            <option value="hepsiburada">Hepsiburada</option>
+            <!-- You can add more options here -->
+        </select>
         <input type="text" id="new-url" placeholder="Yeni URL ekleyin">
         <button onclick="addUrl()">Ekle</button>
     </div>
     <h2>Takip Edilen URL'ler</h2>
+    <ul id="url-list2">
+      
+      
+    </ul>
     <ul id="url-list">
         {% for url in urls %}
         <li>
-            <span>{{ url }}</span>
-            <button class="remove-btn" onclick="removeUrl('{{ url }}')">Sil</button>
+           
+            <span> {{pricedata[url.url].price}} TL <a href="{{ url.url }}" target="_blank" rel="noopener noreferrer">{{ url.url }}</a></span>
+            <button class="remove-btn" onclick="removeUrl('{{ url.url }}')">Sil</button>
         </li>
         {% endfor %}
     </ul>
@@ -66,8 +76,14 @@
     <script>
         function addUrl() {
             var url = $('#new-url').val();
+            var website = $('#website-select').val(); // Get selected website
             if (url) {
-                $.post('/add_url', {url: url}, function(response) {
+                // Create the object to send
+                var data = {
+                    url: url,
+                    website: website
+                };
+                $.post('/add_url', data, function(response) {
                     if (response.success) {
                         updateUrlList(response.urls);
                         $('#new-url').val('');
@@ -93,4 +109,5 @@
         }
     </script>
 </body>
+
 </html>
