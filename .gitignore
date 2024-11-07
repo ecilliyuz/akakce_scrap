@@ -2,4 +2,8 @@ price_data.json
 urls.json
 .env
 app.log
-logs
+# logs klasörünün içindeki tüm dosyaları yoksay
+logs/*
+
+# logs klasörünü takip et, ama içindekileri etme
+!logs/.gitkeep
