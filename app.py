@@ -151,7 +151,7 @@ def check_prices():
 
         save_data(data)
         logger.info("Fiyat kontrol döngüsü tamamlandı. 5 dakika bekleniyor.")
-        time.sleep(300)  # 5 dakika bekle
+        time.sleep(60)  # 5 dakika bekle
 
 
 @app.route("/")
