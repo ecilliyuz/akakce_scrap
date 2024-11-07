@@ -193,7 +193,6 @@ def save_urls(urls):
 @app.route("/remove_url", methods=["POST"])
 def remove_url():
     url_to_remove = request.form["url"]
-    print(url_to_remove)
     logger.info(f"URL silme isteği: {url_to_remove}")
 
     # Load the current list of URLs
@@ -210,6 +209,13 @@ def remove_url():
 
     # Save the updated list of URLs
     save_urls(updated_urls)
+
+    # Load price data and remove the corresponding URL entry
+    price_data = load_data()
+    if url_to_remove in price_data:
+        del price_data[url_to_remove]
+        save_data(price_data)
+        logger.info(f"price_data.json dosyasından {url_to_remove} silindi")
 
     return jsonify(success=True, urls=updated_urls)
 
